@@ -10,5 +10,5 @@ jobs:
         with:
           vpn-client-config: ${{ secrets.VPN_CLIENT_CONFIG }}
           vpn-autoload-config: ${{ secrets.VPN_AUTOLOAD_CONFIG }}
-        run: |
-          openvpn3 sessions-list
+          script: |
+            openvpn3 sessions-list
