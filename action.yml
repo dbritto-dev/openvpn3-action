@@ -12,8 +12,12 @@ inputs:
       The value should be encoded on Base 64.
     required: false
     default: ""
+  script:
+    description: |
+      The script to run. The should use POSIX format as bash script.
+    required: true
 runs:
   using: "docker"
   image: "Dockerfile"
   args:
-    - ${{ inputs.vpn-client-config }} ${{ inputs.vpn-autoload-config }}
+    - ${{ inputs.script }} ${{ inputs.vpn-client-config }} ${{ inputs.vpn-autoload-config }}
