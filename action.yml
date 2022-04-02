@@ -21,3 +21,5 @@ runs:
   image: "Dockerfile"
   args:
     - ${{ inputs.script }} ${{ inputs.vpn-client-config }} ${{ inputs.vpn-autoload-config }}
+  pre-entrypoint: 'pre-entrypoint.sh'
+  post-entrypoint: 'post-entrypoint.sh'
