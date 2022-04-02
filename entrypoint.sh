@@ -2,8 +2,9 @@
 
 set -e
 
-VPN_CLIENT_CONFIG="$1"
-VPN_AUTOLOAD_CONFIG="$2"
+SCRIPT="$1"
+VPN_CLIENT_CONFIG="$2"
+VPN_AUTOLOAD_CONFIG="$3"
 VPN_CLIENT_DIR=$HOME/.openvpn3/client
 VPN_CLIENT_CONFIG_PATH=$VPN_CLIENT_DIR/config.ovpn
 VPN_CLIENT_AUTOLOAD_PATH=$VPN_CLIENT_DIR/config.autoload
@@ -21,3 +22,5 @@ fi
 while [ -z "$(sudo openvpn3 sessions-list | grep -io 'client connected')" ]; do
   sleep 0.1;
 done
+
+sh -c $SCRIPT
