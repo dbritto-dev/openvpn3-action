@@ -1,0 +1,19 @@
+name: "OpenVPN 3 Action"
+description: "Using OpenVPN 3 to start a VPN session"
+inputs:
+  vpn-client-config:
+    description: |
+      VPN Client Config is the OpenVPN profile file (.ovpn or .conf).
+      The value should be encoded on Base 64.
+    required: true
+  vpn-autoload-config:
+    description: |
+      VPN Autoload Config is the username and password file (.autoload) to support auth-user-pass
+      The value should be encoded on Base 64.
+    required: false
+    default: ""
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.vpn-client-config }} ${{ inputs.vpn-autoload-config }}
