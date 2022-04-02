@@ -6,7 +6,7 @@ jobs:
   testing:
     runs-on: ubuntu-latest
     steps:
-      - uses: dbritto-dev/openvpn3-action
+      - uses: dbritto-dev/openvpn3-action@v1
         with:
           vpn-client-config: ${{ secrets.VPN_CLIENT_CONFIG }}
           vpn-autoload-config: ${{ secrets.VPN_AUTOLOAD_CONFIG }}
