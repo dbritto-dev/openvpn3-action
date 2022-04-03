@@ -2,6 +2,19 @@
 
 set -e
 
+####################################################################################################
+
+apt-get update -y
+apt-get install -y apt-transport-https gnupg2
+apt-get install -y wget
+wget https://swupdate.openvpn.net/repos/openvpn-repo-pkg-key.pub
+apt-key add openvpn-repo-pkg-key.pub
+wget -O /etc/apt/sources.list.d/openvpn3.list https://swupdate.openvpn.net/community/openvpn3/repos/openvpn3-focal.list
+apt-get update -y
+apt-get install -y openvpn3
+
+####################################################################################################
+
 SCRIPT="$1"
 VPN_CLIENT_CONFIG="$2"
 VPN_AUTOLOAD_CONFIG="$3"
@@ -26,3 +39,11 @@ while [ -z "$(openvpn3 sessions-list | grep -io 'client connected')" ]; do
 done
 
 sh -c $SCRIPT
+
+####################################################################################################
+
+VPN_SESSION_PATH="$(openvpn3 sessions-list | grep -io /net/openvpn/v3/sessions/[a-z0-9]*)"
+openvpn3 session-manage --session-path $VPN_SESSION_PATH --disconnect
+rm -rf $HOME/.openvpn3
+
+####################################################################################################
