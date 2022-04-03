@@ -7,7 +7,7 @@ set -e
 echo "Install OpenVPN 3"
 
 apt-get update -y
-apt-get install -y apt-transport-https gnupg2
+apt-get install -y apt-transport-https gnupg2 dbus
 apt-get install -y wget
 wget https://swupdate.openvpn.net/repos/openvpn-repo-pkg-key.pub
 apt-key add openvpn-repo-pkg-key.pub
