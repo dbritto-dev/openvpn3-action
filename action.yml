@@ -19,12 +19,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Checkout API Repo
-      uses: actions/checkout@v3
-
-    - name: Get pub key for Amazon DocumentDB (MongoDB)
-      run: curl https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem -o rds-combined-ca-bundle.pem -s
-
     - name: Install OpenVPN 3
       id: vpn-setup
       run: |
@@ -35,6 +29,7 @@ runs:
         sudo apt-key add openvpn-repo-pkg-key.pub
         sudo wget -O /etc/apt/sources.list.d/openvpn3.list https://swupdate.openvpn.net/community/openvpn3/repos/openvpn3-$DISTRO.list
         sudo apt-get update -y && sudo apt-get install -y openvpn3
+      shell: bash
 
     - name: Setup VPN
       run: |
@@ -45,6 +40,7 @@ runs:
         mkdir -m700 -p $VPN_CLIENT_DIR
         echo "${{ inputs.vpn-client-config}}" | base64 --decode >> $VPN_CLIENT_CONFIG_PATH
         echo "${{ inputs.vpn-autoload-config }}" | base64 --decode >> $VPN_CLIENT_AUTOLOAD_PATH
+      shell: bash
 
     - name: Connect to VPN
       run: |
@@ -54,10 +50,13 @@ runs:
         while [ -z "$(sudo openvpn3 sessions-list | grep -io 'client connected')" ]; do
           sleep 0.1;
         done
+      shell: bash
 
     - run: sh -c "${{ inputs.script }}"
+      shell: bash
 
     - name: Disconnect from VPN
       run: |
         sudo openvpn3 session-manage --session-path $(sudo openvpn3 sessions-list | grep -io /net/openvpn/v3/sessions/[a-z0-9]*) --disconnect
-        sudo rm -rf $HOME/.openvpn3/autoload/
+        sudo rm -rf $HOME/.openvpn3/autoload
+      shell: bash
