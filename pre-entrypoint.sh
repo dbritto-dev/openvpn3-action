@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo $DISTRO
+printenv
 
 apt-get update -y
 apt-get install -y apt-transport-https gnupg2
