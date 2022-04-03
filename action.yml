@@ -1,5 +1,8 @@
 name: "OpenVPN 3 Action"
 description: "Using OpenVPN 3 to start a VPN session"
+branding:
+  icon: 'shield'
+  color: 'yellow'
 inputs:
   vpn-client-config:
     description: |
