@@ -1,0 +1,13 @@
+name: 'Testing OpenVPN 3 Action'
+
+on: [push]
+
+jobs:
+  testing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dbritto-dev/openvpn3-action@main
+        with:
+          vpn-client-config: ${{ secrets.VPN_CLIENT_CONFIG }}
+          script: |
+            sudo openvpn3 sessions-list
