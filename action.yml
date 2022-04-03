@@ -18,46 +18,46 @@ inputs:
     required: true
 runs:
   using: "composite"
- steps:
-      - name: Checkout API Repo
-        uses: actions/checkout@v3
+  steps:
+    - name: Checkout API Repo
+      uses: actions/checkout@v3
 
-      - name: Get pub key for Amazon DocumentDB (MongoDB)
-        run: curl https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem -o rds-combined-ca-bundle.pem -s
+    - name: Get pub key for Amazon DocumentDB (MongoDB)
+      run: curl https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem -o rds-combined-ca-bundle.pem -s
 
-      - name: Install OpenVPN 3
-        id: vpn-setup
-        run: |
-          export DISTRO=focal
+    - name: Install OpenVPN 3
+      id: vpn-setup
+      run: |
+        export DISTRO=focal
 
-          sudo apt-get install -y apt-transport-https
-          sudo wget https://swupdate.openvpn.net/repos/openvpn-repo-pkg-key.pub
-          sudo apt-key add openvpn-repo-pkg-key.pub
-          sudo wget -O /etc/apt/sources.list.d/openvpn3.list https://swupdate.openvpn.net/community/openvpn3/repos/openvpn3-$DISTRO.list
-          sudo apt-get update -y && sudo apt-get install -y openvpn3
+        sudo apt-get install -y apt-transport-https
+        sudo wget https://swupdate.openvpn.net/repos/openvpn-repo-pkg-key.pub
+        sudo apt-key add openvpn-repo-pkg-key.pub
+        sudo wget -O /etc/apt/sources.list.d/openvpn3.list https://swupdate.openvpn.net/community/openvpn3/repos/openvpn3-$DISTRO.list
+        sudo apt-get update -y && sudo apt-get install -y openvpn3
 
-      - name: Setup VPN
-        run: |
-          export VPN_CLIENT_DIR=$HOME/.openvpn3/client
-          export VPN_CLIENT_CONFIG_PATH=$VPN_CLIENT_DIR/config.ovpn
-          export VPN_CLIENT_AUTOLOAD_PATH=$VPN_CLIENT_DIR/config.autoload
+    - name: Setup VPN
+      run: |
+        export VPN_CLIENT_DIR=$HOME/.openvpn3/client
+        export VPN_CLIENT_CONFIG_PATH=$VPN_CLIENT_DIR/config.ovpn
+        export VPN_CLIENT_AUTOLOAD_PATH=$VPN_CLIENT_DIR/config.autoload
 
-          mkdir -m700 -p $VPN_CLIENT_DIR
-          echo "${{ inputs.vpn-client-config}}" | base64 --decode >> $VPN_CLIENT_CONFIG_PATH
-          echo "${{ inputs.vpn-autoload-config }}" | base64 --decode >> $VPN_CLIENT_AUTOLOAD_PATH
+        mkdir -m700 -p $VPN_CLIENT_DIR
+        echo "${{ inputs.vpn-client-config}}" | base64 --decode >> $VPN_CLIENT_CONFIG_PATH
+        echo "${{ inputs.vpn-autoload-config }}" | base64 --decode >> $VPN_CLIENT_AUTOLOAD_PATH
 
-      - name: Connect to VPN
-        run: |
-          export VPN_CLIENT_DIR=$HOME/.openvpn3/client
+    - name: Connect to VPN
+      run: |
+        export VPN_CLIENT_DIR=$HOME/.openvpn3/client
 
-          sudo openvpn3-autoload --directory $VPN_CLIENT_DIR
-          while [ -z "$(sudo openvpn3 sessions-list | grep -io 'client connected')" ]; do
-            sleep 0.1;
-          done
+        sudo openvpn3-autoload --directory $VPN_CLIENT_DIR
+        while [ -z "$(sudo openvpn3 sessions-list | grep -io 'client connected')" ]; do
+          sleep 0.1;
+        done
 
-      - run: sh -c "${{ inputs.script }}"
+    - run: sh -c "${{ inputs.script }}"
 
-      - name: Disconnect from VPN
-        run: |
-          sudo openvpn3 session-manage --session-path $(sudo openvpn3 sessions-list | grep -io /net/openvpn/v3/sessions/[a-z0-9]*) --disconnect
-          sudo rm -rf $HOME/.openvpn3/autoload/
+    - name: Disconnect from VPN
+      run: |
+        sudo openvpn3 session-manage --session-path $(sudo openvpn3 sessions-list | grep -io /net/openvpn/v3/sessions/[a-z0-9]*) --disconnect
+        sudo rm -rf $HOME/.openvpn3/autoload/
