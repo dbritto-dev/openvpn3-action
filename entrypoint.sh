@@ -4,6 +4,8 @@ set -e
 
 ####################################################################################################
 
+echo "Install OpenVPN 3"
+
 apt-get update -y
 apt-get install -y apt-transport-https gnupg2
 apt-get install -y wget
@@ -14,6 +16,8 @@ apt-get update -y
 apt-get install -y openvpn3
 
 ####################################################################################################
+
+echo "Running OpenVPN 3"
 
 SCRIPT="$1"
 VPN_CLIENT_CONFIG="$2"
