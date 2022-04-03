@@ -1,5 +1,0 @@
-.github/
-.dockerignore
-
-Dockerfile
-action.yml
