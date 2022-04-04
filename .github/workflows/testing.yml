@@ -1,0 +1,8 @@
+on: [push]
+
+jobs:
+  testing:
+    runs-on: ubuntu-latest
+    steps:
+      - run: lsb_release -a
+      - run: lsb_release --codename | cut -f2
