@@ -25,7 +25,7 @@ runs:
     - name: Install OpenVPN 3
       id: vpn-setup
       run: |
-        export DISTRO=focal
+        export DISTRO=$(lsb_release --codename | cut -f2)
 
         sudo apt-get install -y apt-transport-https
         sudo wget https://swupdate.openvpn.net/repos/openvpn-repo-pkg-key.pub
