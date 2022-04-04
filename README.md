@@ -4,6 +4,10 @@ This action starts a VPN session using OpenVPN 3 and give you the option to run
 any bash script during the session. We recommend you to store your config files
 in GitHub using [encrypted secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets).
 
+> **Note:** this action only support linux (`ubuntu`).
+> Please use one of the [virtual environments](https://github.com/actions/virtual-environments#available-environments)
+> for linux (`ubuntu`) supported by GitHub Actions.
+
 **Reference Links:**
 
 - [OpenVPN 3 for Linux](https://openvpn.net/cloud-docs/openvpn-3-client-for-linux/)
