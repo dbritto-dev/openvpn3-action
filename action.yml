@@ -61,5 +61,5 @@ runs:
     - name: Disconnect from VPN
       run: |
         sudo openvpn3 session-manage --session-path $(sudo openvpn3 sessions-list | grep -io /net/openvpn/v3/sessions/[a-z0-9]*) --disconnect
-        sudo rm -rf $HOME/.openvpn3/autoload
+        sudo rm -rf $HOME/.openvpn3
       shell: bash
