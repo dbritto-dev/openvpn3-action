@@ -75,6 +75,8 @@ jobs:
             sudo openvpn3 sessions-list
 ```
 
+> Note: this approach should be deprecated soon. Please use do not use `vpn-autoload-config` anymore.
+
 # License
 
 The scripts and documentation in this project are released under the [MIT License](/LICENSE)
